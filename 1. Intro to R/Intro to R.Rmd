@@ -1,0 +1,608 @@
+---
+title: "Intro to R"
+author: "Abel Torres Espin"
+date: "Nov 2022"
+output:
+    prettydoc::html_pretty:
+      toc: true
+      theme: cayman
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE, warning = FALSE)
+```
+
+# Introduction to the Intro to R
+## Why R?
+
+Why not R? R is an <abbr title = "This means that lines of code are executed by the R interpreter, rather than compiling the code first (like in C++ or Java)">interpreted</abbr> scripting programming language designed to work around statistics and data. There is a lot of discussion about R or not R now a days, especially in the data science community. Ultimately, the specific language is only relevant over the task at hand. For applied statistics it is great!
+
+**Some good things about R:**
+
+*   It is open-source and free of charge, with a passionate developing community
+*   It is multi-platform
+*   Widely used in the biostats academic community
+*   Designed for analytics, meaning that basic R implements a lot of stats capabilities
+*   Together with S (the predecessor of R), has one of the shorter programming language names out there!
+
+**Some rocky things about R:**
+
+*   It is not the fastest language. Does it matter? Depends on the task
+*   Its internal structure is, well, complicated. But that probably doesn't matter to you
+*   Has a terrible name to Google things, although it got much better over time
+*   Some describe it as not a real language...
+
+## Resources
+
+**Learning more**
+
+Here some learning resources in case you want to dig deeper. Take these as extra for your education. These are ordered from less involved to more detailed
+
+*   Great 2h [video intro](https://www.youtube.com/watch?v=_V8eKsto3Ug)
+*   Good example [summary of an analysis](https://www.computerworld.com/article/2497143/business-intelligence-beginner-s-guide-to-r-introduction.html) in R 
+*   Good [intro book by Roger Peng](https://leanpub.com/rprogramming?utm_source=Homepage&utm_medium=PersonalWebsite&utm_campaign=Personal%20Website), a data science professor 
+*   Basic [statistics with R](https://courses.ucsf.edu/course/view.php?id=5792) from UCSF library
+*   The "official" (from the R core team) [intro Book to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf)
+
+**Finding help**
+
+*   Ask Google first. Seriously, there is only one coder in the world, Google. The rest of us just keep coping from her.
+*   Check questions at [Stackoverflow](https://stackoverflow.com/), a community of tech developers with millions of questions and answers. There is a 99.99% chance that your questions have already been formulated!
+*   Read the Documentation!
+*   If you have not found the answer yet, ask! In forums (Stackoverflow), mailing list, us! But first make sure you know how to get the most of it by [asking good questions](https://medium.com/@gordon_zhu/how-to-be-great-at-asking-questions-e37be04d0603)
+
+## Integrated Development Envirorment (IDE)
+
+Integrated Development Environment or IDE is just a fancy name for the software that helps to write code. This can be from the simplest text editor to very sophisticated programs with thousands of options. For a single programming language there may be several IDEs. Which one you use depends on you!
+
+When you install R in your system (the R environment), a basic R IDE called RGui is installed, and you can use it for programming in R.
+
+In this course we will use RStudio, an advanced IDE with great additional tools for data analysis. See the next section for instructions on installation.
+
+## Installation
+
+For this class you will need to install [R](https://www.r-project.org/) and [RStudio (free desktop option)](https://www.rstudio.com/products/rstudio/download/#download)
+
+
+# Coding notebooks and reproducibility
+
+Coding notebooks are great coding tools for analysis. They allow you to alternate regular text and chunks of code in a single document. This intro is a notebook! Specifically, an Rmarkdown notebook. Markdown is a markup language, that is, text with some extra things to format the text. Rmarkdown uses this to be able to have code and text in the same document. **It is like a lab notebook but for your code!**
+
+The great advantage of Rmarkdown is that greatly facilitate reporting, communicating the results and reproducibility.
+
+````
+```{r}`r ''`
+# This is a code chunk in Rmarkdown. # Marks a comment
+```
+````
+
+This is some text in `Markdown`, followed of some code and its output
+
+```{r}
+plot(cars)
+```
+
+# The basic basic
+
+Most of what follows can be generalized for most languages (with small variations in syntax).
+
+## Functions
+
+A function is a small script of code that has been coded for us to do some specific action. In R functions have the form of `function_name ( argument )`. For example, we have passed the argument *cars* to the `plot()` function above. There are a lot of functions out there, so most of the work is to remember them.
+
+If you want to know how a function works, you can start by looking at the documentation like this:
+
+```{r, eval = FALSE}
+?plot
+```
+
+## Data types
+
+Here the basic types of data that R uses. Like most coding languages, data can be (among others):
+
+*   `logical`. It has three states: *TRUE*, *FALSE* or *NA* (not available). Also called Boolean in other languages.
+*   `integer`. An integer number: *1*. Accepts *NA*
+*   `Double`. A number with decimal points *1.23*. Accepts *NA*
+*   `Character`. Some text *"I am a character"*. Also known as string. Accepts *NA*
+*   `raw`. Raw bytes of information. For advanced users.
+*   `complex`. Complex numbers. For advanced users.
+
+```{r}
+an_integer <- 1
+an_integer
+```
+
+    Note that the <- symbol is the assignment operator. It assigns the right side to the left side (the name of the object to create). It is the same than using = in other languages. R can also use =, but <- is by far the most common assignment operator. Often the object we assign to are called VARIABLES
+
+```{r}
+a_character <- "I am a character"
+a_character
+```
+
+
+## Objects and Data structures
+
+In R, everything is an object. In programming, objects are instances of a class. Since R has a complicated relationship with objects and classes, we will pass on entering on this. The most important thing to know is that there are special data objects in R that allows for storing data. These are the fundamental building blocks of coding for data analysis.
+
+### Vectors
+
+Vectors are the minimal unit of data storage in R. They have one dimension and all elements within a vector are of the same type. There are several ways to create a vector, but the most common is by using the function `c()` (c as in combine).
+
+```{r}
+my_vector <- c(1L,3L,4L,5L,6L) # this is a numeric vector
+my_vector # this line prints the vector
+```
+
+```{r}
+typeof(my_vector) # this line tells us the type of the vector
+```
+
+A character vector
+
+```{r}
+my_second_vector <- c("Russell", "Adam", "Abel")
+typeof(my_second_vector)
+```
+
+A logical vector
+
+```{r}
+my_third_vector <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+typeof(my_third_vector)
+```
+
+**Getting the elements of a vector**
+
+We can access the elements of a vector by **subsetting**. This is done using the `[ ]` operator with the index of the element to extract.
+
+    Note that R starts counting at 1, contrary to other languages that start counting at 0.
+
+```{r}
+my_vector[2] # second element of the vector
+```
+
+We can pass more than one index by creating a vector of indexes
+
+```{r}
+my_second_vector[c(1,3)]
+```
+
+### Matrices
+
+Matrices are two-dimensional data structures. Like vectors, all elements of a matrix are of the same type. They can be defined by the `matrix()` function.
+
+```{r}
+my_matrix <- matrix(data = c(1,2,3,4), nrow = 2, byrow = TRUE) # a 2 row matrix
+my_matrix
+```
+
+The *nrow* argument allows to control for the number of rows, and the *byrow* argument whether the matrix is created by filling in the cells by row or by column.
+
+```{r}
+my_matrix <- matrix(data = c(1,2,3,4), nrow = 2, byrow = FALSE) # a 2 row matrix
+my_matrix
+
+t(my_matrix)
+```
+
+The elements of a matrix can also be subsetted like in vectors but now we pass 2 indexes separated by `,`. The first index are the rows, the second the columns. So, `my_matrix [rows , columns]`. Blank row index or Blank column index returns all the rows or all the columns
+
+```{r}
+my_matrix[2,1]
+my_matrix[,1]
+my_matrix[2,]
+my_matrix[,]
+```
+
+### Arrays
+
+Arrays are like matrices, but we can control the number of dimensions. They are created with the `array()` function. The *dim* argument controls the size and the number of dimensions. For example, dim = c(2,2,3) sets a 3D-array to have 2 rows, 2 columns and 3 "depth" elements.
+
+    Note that you can set one- dimensional arrays. These are equivalent to vectors, although there are differences between them that may matter depending on the task.
+
+```{r}
+my_array <- array( data = c(1,4,5,6,7,2,4,9,8, 6, 7, 7), dim = c(2,2,3))
+my_array
+```
+
+As in matrices, we can subset any array with the correct set of indexes
+
+```{r}
+my_array[1,,]
+my_array[,,1]
+my_array[2,2,2]
+```
+
+
+### List
+
+Until now, all the data objects stored elements of the same type. A list is a very versatile data object since allows for each element to be of different types and it can contain different objects. They are created with the `list()` function.
+
+```{r}
+my_list <- list("Genes" = c("gfap", "tnfa", "il1b"), "expression" = c(10.3, 34.5, 5.7))
+my_list
+```
+
+The elements of a list can also be of different objects
+
+```{r}
+my_list2<-list("my_list" = my_list, "a_vector" = my_vector, "a_matrix" =my_matrix)
+```
+
+We can access the elements of a list with the *$* operator or using *[[ ]]*.
+
+```{r}
+my_list$expression
+```
+
+```{r}
+my_list[[1]]
+```
+
+```{r}
+my_list[["expression"]]
+```
+
+```{r}
+my_list2$a_vector
+```
+
+    A lot of information in R is stored in list. For example, functions that return more than one result usually format the output in a list.
+    
+### data.frame
+
+data.frames are one of the most useful data storage objects in R. They are like 2 dimensional matrices, but each column can be of a different data type. In practice, this is like a **spreadsheet!**. This is great for analytics since tabular data is the most common form of organizing data for analysis. In R, rows are called observations and columns variables.
+
+Let's take a look a small data.frame that comes with R:
+
+```{r}
+mtcars
+#check ?mtcars to know more
+```
+
+We can subset as in like list, with the *$* operator, or in matrices.
+
+```{r}
+mtcars$disp
+```
+
+```{r}
+mtcars[c(1,2,3),"disp"]
+```
+
+```{r}
+mtcars[,c("disp", "cyl")]
+mtcars[,4]
+```
+
+data.frames are created with... that is right! the `data.frame()` function
+
+```{r}
+my_dataframe <- data.frame(Gene = c("gfap", "tnfa", "il1b"), 
+                           expression = c(10.3, 34.5, 5.7))
+```
+
+Creating data.frames by hand is tedious, so most of the time you want to upload data directly from a file. See X section for that!
+
+### Attributes and other useful things
+
+Sometimes it is useful to gain information about a data object. For example, we may want to know the number of columns, or the names of the elements of a list. The following functions provide some of the attributes of an object and other useful information.
+
+```{r}
+#Length
+length(my_vector)
+length(my_list)
+
+#Dimensions
+dim(my_vector)
+dim(my_matrix)
+dim(mtcars)
+
+#Names
+names(my_list)
+rownames(mtcars)
+colnames(my_dataframe)
+colnames(mtcars)
+
+#structure
+str(my_list)
+str(my_dataframe)
+str(iris)
+
+my_factor<-factor(my_second_vector, levels = c("Adam", "Russell", "Abel"))
+
+as.numeric(my_factor)
+```
+
+# The Less basic
+
+## Controlling the flow
+
+R is sequential, meaning that lines are interpreted in order one by one. This is not unique to R, but most languages. As you can imagine, this is very limited as the information flows from the first line to the last in a single direction. Most languages have instructions to control the flow so that more complex operations can be performed.
+
+    If you know this, you can do almost anything! There may be better ways, but you free yourself from the tyranny of the flow!
+
+### Conditionals
+
+**What if...?** Conditionals allow for branching points in the code by an *if*. What if we learn R? We are fRee!
+
+```{r}
+learned_R <- "y"
+
+if (learned_R == "yes") {
+  
+  print("You are fRee!")
+  
+} else if (learned_R == "no"){
+
+  print("Keep trying!")
+
+} else{
+
+  print("input error, it is yes or no")
+}
+
+```
+
+The conditional is composed by the `if()` statement and a condition. The *==* operator means "equal". When the condition evaluates to TRUE, then the code is executed, otherwise is ignored. This creates what are known as branching points in the flow.
+
+    Note that *=* would not work because that is the assignment operator! *else* is optional but provides a contra argument to the condition.
+    
+```{r}
+learned_R = TRUE
+
+if (learned_R != FALSE) {
+  print("You are fRee!")
+} else{
+  print("Keep trying!")
+}
+
+learned_R <-
+  FALSE
+```
+
+The *ifelse* function can be used in short branching points
+
+```{r}
+my_vector
+ifelse( test = {my_vector%%2 == 0}, yes = "even", no = "odd")
+# ifelse( my_vector%%2 == 0, "even", "odd")
+```
+
+### Loops and apply
+
+Loops are iterations through the code that allows us to run a chunk of the flow over and over again until a specific condition is met. There are two basic loop forms in R, *for* and *while* loops.
+
+**for**
+```{r}
+for (i in 1:10){
+  cat("iteration:", i)
+}
+
+for (i in my_second_vector){
+  cat("names:", i, "\n")
+}
+```
+
+```{r}
+for (i in my_second_vector){
+  
+  string_length<-nchar(i)
+  by_letter<-unlist(strsplit(i, split = ""))
+  first_letter<-by_letter[1]
+  counts<-table(by_letter)
+  
+  if (any(by_letter=="e")){
+    contains_e<-TRUE
+  } else{
+    contains_e<-FALSE
+  }
+  
+  print(i)
+  cat("\t", "n letters:", string_length, "\n")
+  cat("\t", "1st letter:", first_letter, "\n")
+  cat("\t", "contains e:", contains_e, "\n")
+  cat("\t", "letter count:", paste0(names(counts),": " ,counts, " | "), "\n")
+}
+```
+
+*while*
+
+```{r}
+plot(x=0, y=0, xlim = c(0,10), ylim = c(0,100))
+
+count<-0
+while ( count <=10){ #set the condition
+  points(x = count, y = count^2)
+  Sys.sleep(1)
+  count <- count + 1 # note that we need to update the index variable in the condition
+}
+```
+
+#### Apply family
+
+The apply family of functions provide a **"vectorized"** version of loops, allowing for nicer (and sometimes faster) iteration code than *for* and *while*.
+
+**Class example**
+```{r}
+df<-iris
+head(iris, 5)
+str(df)
+
+class_df<-character(ncol(df))
+
+for( i in seq_along(df)){
+  class_df[i]<-class(df[,i])
+}
+
+class_df
+```
+
+```{r}
+class_df<-sapply(df, class)
+class_df
+```
+
+**Column mean and sd example**
+
+```{r}
+df<-mtcars
+head(df)
+
+means <- numeric(ncol(df))
+
+for (i in seq_along(df)) {
+  means[i] <- mean(df[,i])
+}
+
+sds <- numeric(ncol(df))
+for (i in seq_along(df)) {
+  sds[i] <- sd(df[,i])
+}
+
+means
+sds
+```
+
+```{r}
+means<-apply(df, 2, mean)
+sds<-apply(df, 2, sd)
+
+means
+sds
+
+colMeans(df)
+```
+
+Let's compare them in execution time
+
+```{r}
+df<-as.data.frame(rep(mtcars, 2000))
+dim(df)
+
+system.time({
+  
+  means <- numeric(ncol(df))
+  for (i in seq_along(df)) {
+    means[i] <- mean(df[,i])
+  }
+
+})
+
+system.time({
+  means<-apply(df, 2, mean)
+})
+
+system.time({
+  means<-sapply(df, mean)
+})
+
+system.time({
+  means<-colMeans(df)
+})
+```
+
+We can also pass our own functions
+
+```{r}
+df<-mtcars
+
+CVs<-apply(df, 2, function(x){
+  sd(x)/mean(x)
+})
+
+CV<-function(x){
+  ##sdfds
+  
+  ## ddf
+  
+  sd(x)/mean(x)
+}
+
+CVs<-apply(df, 2, CV)
+```
+
+
+## Reading data into R
+
+Reading data from a file into R is easy. There are a few functions, but we can start with `read.csv()`, which, yes, reads .csv files into data.frames. But before we do that, let's save a .csv file! with the `write.csv()` function.
+
+```{r}
+write.csv(x = mtcars, file = "mtcars.csv")
+```
+
+```{r}
+my_data <- read.csv("mtcars.csv")
+```
+
+Easy right! There are a few things we want to consider. The most important one is that `read.csv()` will try to guess the type for each column, but sometimes gets it wrong. So, make sure that you double check that!
+
+```{r}
+str(my_data)
+```
+
+You can force the data type with the *colClasses* argument, or you can transform them after.
+
+```{r}
+my_data$cyl <- as.character(my_data$cyl)
+typeof(my_data$cyl)
+```
+
+## Tidyverse
+
+Tidyverse is probably the most used universe of R packages. A package is an R extension (also called library) that adds specific functions to R. A universe contains several packages with integrated and interoperable functionalities. The tidyverse combines packages and functions mostly related to data wrangling, operations and graphics
+
+**Installing a package**
+```{r}
+# From CRAN
+# install.packages("tidyverse")
+```
+
+**Loading a package to current R session**
+```{r}
+library(tidyverse)
+```
+
+### dplyr and “piping”
+
+A handy [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
+
+Tidyverse contains the dplyr package, a framework for data manipulation (or data wrangling). It contains a set of functions that we call verbs and allow us to operate and transform data.
+
+“Piping” using the pipe operator (*%>%*) allow to chain different processes without having to break our code
+
+#### Filter, select and mutate
+
+**Filter and select**
+```{r}
+head(my_data)
+
+my_data%>%
+  filter(disp < 100)
+
+my_data%>%
+  filter(disp < 100, gear == 5)
+
+my_data%>%
+  select(mpg, disp, wt)
+
+my_data%>%
+  filter(disp < 100)%>%
+  select(mpg, disp, wt)
+```
+
+**Mutate**
+```{r}
+my_data%>%
+  mutate(size = ifelse(wt > 2, "big", "small"))
+
+my_data%>%
+  mutate(size = ifelse(wt > 2, "big", "small"),
+         cyl_gear = paste(cyl, gear, sep = "_"))
+```
+
+### Other important dplyr functions
+
+There is a lot to explore in dplyr and the rest of the tidyverse. We will talk about graphics in the data viz class. Other verbs that you probably will need are: *group_by* and *summarize*. Check them out!

@@ -1,0 +1,138 @@
+---
+title: "A motivational use case: Chicks and diet"
+author: "Abel Torres Espin"
+date: "Nov 2022"
+output: 
+    prettydoc::html_pretty:
+      toc: true
+      theme: cayman
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE, warning = FALSE)
+library(tidyverse)
+library(lme4)
+```
+
+
+# Introduction
+
+**Why should we learn how to code?** This prelude aims at motivating you to really get into coding, R and analytics, and there is no better way to show what can be done.
+
+We will work in a small example to show how in a few lines of code we can clean our data, makes some exploratory plots, perform an analysis and report all together. And we will do it in a way that is reusable and reproducible.
+
+# The Experiment: Feeding chickens
+
+Let's imaging we are very interested on how different diets affects the growth rate of chickens with the goal to optimize their weight gain. We conduct an experiment where 4 groups of chicks recieve one of 4 different diets and we measure the weight of each chick over time. Luckly for us, the experiment has been performed and the data is available in R.
+
+```{r}
+dataset<-ChickWeight # get the data
+head(dataset) # print the first rows of the data
+```
+
+We can see the dataset has 4 columns:
+
+* `weight`: the weight of each animal in grams
+* `Time`: the time of measurement in days
+* `Chick`: the animal identifier
+* `Diet`: the diet type
+
+## Analysis
+
+We are going to perform the following analysis workflow:
+
+* Summarize the data
+* Exploratory visualization
+* Test the hypothesis that different diets induce different weight gain over time
+* Plot for a figure
+
+### Data description and exploration
+
+The goal of performing data description and exploration is to have a look at the data. This can be useful to detect trends or potential errors. There a several way we can describe this dataset. We are going to do it in two ways, one by calculating descriptive statistics (mean and standards deviation) per group and time, and another by plotting the boxplots per group X time.
+
+    Exploratory data is never inferential. It is easy to baise ourselfs with what we see in the data. If the data is from a experiment designed to test a hypothesis, it is important to be clear about the hypothesis befor checking on the data. Your hypothesis should not change during data exploration, although your analytical approach it may depending on the data.
+    
+**Descriptive statistics**
+
+```{r}
+dataset_summary<-dataset%>%
+  group_by(Diet, Time)%>%
+  summarise(mean_weight = mean(weight),
+            SD_weight = sd(weight),
+            n_animals = n())
+
+dataset_summary
+```
+
+**Boxplot**
+
+```{r}
+boxplot(weight~Diet*Time, data = dataset)
+```
+
+### Hypothesis testing
+
+This experiment is a two factor design with repeated measures. We will see what that means latter on. The two factors are the diet and the time of measurement. These are called factors because we fixed them in our experiments to be the factors that (potentially) influence the response. In this case the response is measured on the weight.
+
+This type of experiments can be analyzed with a 2way repeated measures analysis of variance (ANOVA) or with a linear mixed model. This is easy in R. We will explain latter what all this code means!
+
+```{r}
+analysis<-aov(weight ~ Diet*factor(Time) + Error(Chick), data = dataset)
+summary(analysis)
+```
+
+We can see that there is a main effect of diet, a effect of time and a time per diet interaction.
+
+### Plotting
+
+For plotting we are going to use the *ggplot* R package. For now, don't worry about the code!
+
+```{r}
+ggplot(dataset, aes(Time, weight, color = Diet, shape = Diet))+
+  stat_summary(fun = mean, geom = "line")+
+  stat_summary(fun.data = mean_se, geom = "errorbar")+
+  stat_summary(fun = mean, geom = "point")+
+  xlab("Time from birth (days)")+
+  ylab("Weight(g)")+
+  theme_minimal()
+```
+
+# The code
+
+The code chunk bellow has little more than 15 lines of code. I has everything needed for this example. There are three great things about we just did:
+
+1. Every decision we made is in the code. If we add annotations and text, our entire workflow is documented. In a year from now we can come back and know exactly what we did. This is not often true when using point-click software.
+2. The analysis is reusable and reproducible. Someone with the data and the code would obtain the same results if versions are equal. We can also reuse the code for our own future experiments. For example, if you decide to do the experiment again to confirm the results, you just need to collect the data and organize it in the same way. Running this code with the new data will take seconds, and your results will be ready!
+3. Everything is contained in this document (from data preparation, analysis and plotting), and it can be rendered into interactive version to be shared with collaborators.
+
+```{r, eval=FALSE}
+# 1. Load the data
+dataset<-ChickWeight 
+
+# 2. Summarize the data
+dataset_summary<-dataset%>%
+  group_by(Diet, Time)%>%
+  summarise(mean_weight = mean(weight),
+            SD_weight = sd(weight),
+            n_animals = n())
+
+dataset_summary
+
+boxplot(weight~Diet*Time, data = dataset)
+
+# 3. Perform analysis
+analysis<-aov(weight ~ Diet*factor(Time) + Error(Chick), data = dataset)
+summary(analysis)
+
+# 4. Visualize
+ggplot(dataset, aes(Time, weight, color = Diet, shape = Diet))+
+  stat_summary(fun = mean, geom = "line")+
+  stat_summary(fun.data = mean_se, geom = "errorbar")+
+  stat_summary(fun = mean, geom = "point")+
+  xlab("Time from birth (days)")+
+  ylab("Weight(g)")+
+  theme_minimal()
+```
+

@@ -1,0 +1,385 @@
+---
+title: "Applied biostats in R"
+author: "Abel Torres Espin"
+date: "Nov 2022"
+output: 
+  prettydoc::html_pretty:
+  toc: true
+  theme: cayman
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+This class is intended to bring everything we have seen until now together by presenting a few illustrative use cases of experiments that will help us to review concepts and perform analysis in R. In addition, we will see some important ideas of performing analysis of experimental data.
+
+## The libraries
+
+We are going to use the following packages, make sure you have them installed!
+
+```{r}
+#install.package(tidyverse)
+#install.package(DT)
+#install.package(rstatix)
+
+library(tidyverse)
+library(DT)
+library(rstatix)
+library(lme4)
+library(lmerTest)
+```
+
+
+# Sleeping pills
+
+Let's take a look at the first dataset, the `sleep` data that comes in the `{datasets}` package. To check the description of the data we can do:
+
+```{r, eval=FALSE}
+?sleep
+```
+
+## The dataset
+**Q: Based on the documentation, what can we say about this study?**
+
+Let's check some things about the data
+
+```{r}
+class(sleep)
+dim(sleep)
+str(sleep)
+```
+
+```{r}
+sleep
+```
+
+**Q: What type of design is this?**
+**Q: What is N and n?**
+
+## Some exploratory look at the data
+
+We can start by doing exploratory data analysis or EDA. This is the process of gaining a first inshight of what the data has to offer.
+
+    WARNING! Exploratory analyses are descriptive, not inferential. To be able to make inferential statements form the data we need to make use of inferential statistics such has hypothesis testing!
+    
+EDA is more common in datasets that are messy and/or come from studies that has not be designed, that is, studies that are non-experimental. In those cases, a good EDA is necessary to understand the data structure, potential counfoundings, etc. It is common that if you have designed the experiment well, and collected the data with the analysis in mind, EDA are less necessary. Even then EDA and descriptive statistics can help to spot data entry errors and other potential issues.
+
+```{r}
+boxplot(extra ~ group, data = sleep) #boxplot with base R
+```
+
+## Hypothesis testing
+
+**Q: What hypothesis you think the authors of this dataset wanted to test?**
+**Q: How would you test for that hypothesis?**
+
+```{r}
+drug_1 <- sleep$extra[sleep$group==1]
+drug_2 <- sleep$extra[sleep$group==2]
+
+## effect size as mean difference
+mean_diff <- mean(drug_1)-mean(drug_2)
+
+## pooled standard deviation
+s1 <- sd(drug_1)
+s2 <- sd(drug_2)
+n1 <- length(drug_1)
+n2 <- length(drug_2)
+
+pooled_sd <- sqrt(((n1-1)*s1^2 + (n2-1)*s2^2) / (n1+n1-2))
+
+t_test <- mean_diff/sqrt(pooled_sd^2 *(1/n1+1/n2))
+```
+
+Now using the `t.test()` function!
+
+```{r}
+sleep_test <- t.test(drug_1, drug_2)
+sleep_test
+```
+
+**Q: What is the results of the test?**
+**Q: what is the null hypothesis and the alternative hypothesis in this case?**
+
+### Power the nap!
+
+It seems that the results are not significant, so we "cannot" reject the null hypothesis that there are differences in soporific drugs in how much they increase time of sleep compared to controls (note that the control data is implicit here as we are measuring the difference). 
+
+However, based on the results it seems that there is a potential effect that we are missing. We want to run the experiment again. So we use this data to perform power calculation and help to design the next experiment.
+
+```{r, eval=FALSE}
+?power.t.test
+```
+
+```{r}
+power.t.test(n=NULL, delta = mean_diff, sd = pooled_sd , sig.level = 0.05, power = 0.8)
+```
+
+### EXTRA: a little simulation study
+
+Let's simulate doing the experiment again, for that we are going to perform what is call parametric bootstrapping, that is, taking random draws from the distribution of the first study.
+
+```{r}
+sim_drug_1<- rnorm(24, mean = mean(drug_1), sd = s1)
+sim_drug_2<- rnorm(24, mean = mean(drug_2), sd = s2)
+
+boxplot(sim_drug_1, sim_drug_2)
+
+t.test(sim_drug_1, sim_drug_2)
+```
+
+**exQ: if perform this experiment 1000 times, how often we expect the p value to be significant?**
+
+```{r}
+results <-vector(length = 1000)
+
+for (i in 1:1000){
+  sim_drug_1<- rnorm(24, mean = mean(drug_1), sd = s1)
+  sim_drug_2<- rnorm(24, mean = mean(drug_2), sd = s2)
+
+  test<-t.test(sim_drug_1, sim_drug_2)
+  
+  results[i] <- test$p.value
+}
+```
+
+```{r}
+plot(results)
+mean(results<0.05)*100
+
+# Empirical distribution
+plot(ecdf(results))
+abline(v =0.05, col = "red")
+abline(h =mean(results<0.05), col = "green")
+
+# P value hopping
+plot(cummean(results), ylab = "cummulated mean p value", type = "l")
+abline(h =0.05, col = "red")
+```
+
+
+```{r, eval=FALSE}
+## interactive
+
+plot(y = 1, x = 1, ylim = c(0,1), ylab = "p-value", xlim = c(1,100), col = "white")
+abline(h = 0.05, col = "red")
+
+for (i in 1:100){
+  sim_drug_1<- rnorm(24, mean = mean(drug_1), sd = s1)
+  sim_drug_2<- rnorm(24, mean = mean(drug_2), sd = s2)
+
+  test<-t.test(sim_drug_1, sim_drug_2)
+  
+  
+  # readline("Enter for next")
+  if (test$p.value<0.05){
+    color = "green"
+  }else{
+    color = "orange"
+  }
+  points(y = test$p.value, x = i, ylim = c(0,0.1), 
+         ylab = "p-value", col = color)
+  Sys.sleep(0.7)
+}
+```
+
+
+## Let's go back to sleep: A second look
+
+Let's take a second look at this analysis, since we ignored an important fact for illustration!
+
+```{r, eval=FALSE}
+?sleep
+```
+
+    The group variable name may be misleading about the data: They represent measurements on 10 persons, not in groups.
+    
+This means that the same subjects are tested for each drug!
+
+**Q: What is our mistake here?**
+
+### A paired analysis
+
+```{r}
+t.test(drug_1, drug_2, paired = T)
+```
+
+**Q: What can we conclude with this new result?**
+
+```{r}
+# we will learn more about this in the next class
+
+ggplot(sleep, aes(group,extra, group = ID))+
+  geom_point()+
+  geom_line()
+```
+
+# Animals love to swim
+
+For this analysis we are going to use a dataset that have been deposited at the [odc-tbi.org](odc-tbi.org), a data repository for Traumatic Brain Injury (TBI) studies. We have provided the file in CLE, so you should be able to download it and put it in the same folder than this file.
+
+    DISCLOSURE: Adam, Abel and Russell are part of the ODC-TBI team. This dataset was chosen as it contains particular elements helpful for this class!
+
+## The study
+
+The details of the study are published:
+
+    Clark R. Andersen, Jordan Wolf, Kristofer Jennings, Donald S. Prough, and Bridget E. Hawkins.Journal of Neurotrauma.Feb 2021.435-445.http://doi.org/10.1089/neu.2020.7089
+
+The article is open access, so you should be able to read it if you are interested. The work sicks to evaluate different data analysis methods for the Morris water maze (MWM), a learning and memory assessment widely used in behavioral neuroscience and experimental neurology research, including TBI.
+
+MWM is a navigation swim task, where animals are placed in a large circular pool and are required to find an invisible or visible platform by using cues. The time that the animal takes to find the platform is a measure of learning and memory.
+
+## Reading the data
+
+Because this dataset is external to R, we need to read it in first. Datasets in sharing repositories are often companion with metadata, or associated information, such as a data dictionary with the description of each column in the data.
+
+```{r}
+mwm_df <- read.csv("../data/odc-tbi_408.csv")
+mwm_dictionary <-read.csv("../data/odc-tbi_408_dict.csv")
+```
+
+```{r}
+colnames(mwm_df)
+```
+
+```{r}
+mwm_dictionary %>%
+  DT::datatable()
+```
+
+## First analysis
+
+The study is more complicated that what we need for this exercise, so we are going to take a moment to prepare the data. It is common to have to do some data cleaning and formatting before analysis. This is often referred to **data wrangling**.
+
+
+Let's change the name of some variables so that it is easier to work with them
+
+```{r}
+mwm_df<-mwm_df%>%
+  mutate(days = MWMTestDaysNum,
+         response = MWMLatencyVal,
+         id = as.factor(SubjectIdentifierNumber),
+         group = as.factor(AnimalInjuryGroupAssignTyp),
+         experiment = as.factor(StudyProtocolName),
+         trial = as.factor(MWMTrialPerDayNum))
+```
+
+```{r}
+table(mwm_df$trial, mwm_df$experiment) ## cross-tabular table
+```
+
+
+```{r}
+ggplot(mwm_df, aes(days, response, color = group))+
+  stat_summary(fun = "mean", geom = "line")+
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.4)+
+  facet_grid(trial~experiment)
+```
+
+The first thing to notice is that the animals are tested on the MWM three different days, and for each day, the animals are tested 4 times. For illustration purposes, we are going to take only the data for teach 4th trial. In addition, we see that the study has been performed on different experiments. We are going to look at single experiment first.
+
+
+```{r}
+mwm_caseOne<-mwm_df%>%
+  filter(experiment == "Experiment2", trial == "3")%>%
+  select(id, group, days, response)%>%
+  mutate(days_f = as.factor(days)) ## days as categorical
+```
+
+```{r}
+mwm_caseOne
+```
+
+**Q: What is the experimental design?**
+**Q: How do we analyze it?**
+
+### EDA
+```{r}
+boxplot(response ~group*days, mwm_caseOne)
+
+ggplot(mwm_caseOne, aes(days_f, response, color = group, group = group))+
+  stat_summary(fun = "mean", geom = "line")+
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.4)
+```
+
+```{r}
+## from the rstatix package
+fit_anova <- anova_test(
+  data = mwm_caseOne, dv = response, wid = id,
+  within = days_f, between = group
+)
+
+fit_anova$ANOVA
+
+## using aov from the stats package
+fit_aov<-aov(response ~ days_f*group + Error(id/days_f), data = mwm_caseOne)
+summary(fit_aov)
+```
+
+### Checking for sphericity
+Valid inference requires sphericity assumption to be met. If sphericity assumption is violated, our F test is too liberal, meaning that the probability of type I error increases.
+
+**Q: Can anyone state that sphericity assumption?**
+
+```{r}
+fit_anova$`Mauchly's Test for Sphericity` #Sphericity is violated
+```
+
+**Q: What are the results?**
+
+## A more complicated analysis
+
+Let's incorporate the experiment into the analysis!
+
+**Q: What kind of design is know?**
+
+```{r}
+mwm_caseTwo<-mwm_df%>%
+  filter(trial == "3")%>%
+  select(id, group, days, response, experiment)%>%
+  mutate(days_f = as.factor(days))
+```
+
+```{r}
+fit_anova <- anova_test(
+  data = mwm_caseTwo, dv = response, wid = id,
+  within = days_f, between = c(group, experiment)
+)
+
+fit_anova$ANOVA
+```
+
+```{r}
+ggplot(mwm_caseTwo, aes(days_f, response, color = group, group = group))+
+  stat_summary(fun = "mean", geom = "line")+
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.4)+
+  facet_grid(~experiment)
+```
+
+### Checking for sphericity
+```{r}
+fit_anova$`Mauchly's Test for Sphericity` #Sphericity is violated
+fit_anova$`Sphericity Corrections` ## Corrected p values based on sphericity violation
+```
+
+## A linear mixed model approach
+
+```{r}
+## As above, days as categorical, very similar to RM-ANOVA
+fit<-lmer(response ~ days_f*group*experiment + (1|id),data = mwm_caseTwo)
+anova(fit)
+```
+
+
+```{r}
+## Days as a continous function
+fit<-lmer(response ~ days*group*experiment + (days|id),data = mwm_caseTwo)
+anova(fit)
+```
+

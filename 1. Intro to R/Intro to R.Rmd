@@ -48,7 +48,7 @@ Here some learning resources in case you want to dig deeper. Take these as extra
 
 **Finding help**
 
-*   Ask Google first. Seriously, there is only one coder in the world, Google. The rest of us just keep coping from her.
+*   Ask Google first. Seriously, there is only one coder in the world, Google. The rest of us just keep copying from her.
 *   Check questions at [Stackoverflow](https://stackoverflow.com/), a community of tech developers with millions of questions and answers. There is a 99.99% chance that your questions have already been formulated!
 *   Read the Documentation!
 *   If you have not found the answer yet, ask! In forums (Stackoverflow), mailing list, us! But first make sure you know how to get the most of it by [asking good questions](https://medium.com/@gordon_zhu/how-to-be-great-at-asking-questions-e37be04d0603)
@@ -571,7 +571,7 @@ A handy [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wra
 
 Tidyverse contains the dplyr package, a framework for data manipulation (or data wrangling). It contains a set of functions that we call verbs and allow us to operate and transform data.
 
-“Piping” using the pipe operator (*%>%*) allow to chain different processes without having to break our code
+“Piping” using the pipe operator (*%>%*) allow to chain different processes without having to break our code.
 
 #### Filter, select and mutate
 

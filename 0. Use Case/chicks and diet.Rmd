@@ -101,7 +101,7 @@ ggplot(dataset, aes(Time, weight, color = Diet, shape = Diet))+
 
 # The code
 
-The code chunk bellow has little more than 15 lines of code. I has everything needed for this example. There are three great things about we just did:
+The code chunk bellow has little more than 15 lines of code. It has everything needed for this example. There are three great things about we just did:
 
 1. Every decision we made is in the code. If we add annotations and text, our entire workflow is documented. In a year from now we can come back and know exactly what we did. This is not often true when using point-click software.
 2. The analysis is reusable and reproducible. Someone with the data and the code would obtain the same results if versions are equal. We can also reuse the code for our own future experiments. For example, if you decide to do the experiment again to confirm the results, you just need to collect the data and organize it in the same way. Running this code with the new data will take seconds, and your results will be ready!

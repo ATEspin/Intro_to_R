@@ -1,7 +1,7 @@
 ---
 title: "Intro to R"
 author: "Abel Torres Espin"
-date: "Nov 2022"
+date: "March 2023"
 output:
     prettydoc::html_pretty:
       toc: true
@@ -265,7 +265,14 @@ mtcars
 We can subset as in like list, with the *$* operator, or in matrices.
 
 ```{r}
-mtcars$disp
+mtcars$cyl
+rownames(mtcars)
+
+bj1_t<-t(mtcars)
+
+iris
+
+?mtcars
 ```
 
 ```{r}
@@ -273,8 +280,14 @@ mtcars[c(1,2,3),"disp"]
 ```
 
 ```{r}
-mtcars[,c("disp", "cyl")]
-mtcars[,4]
+mtcars[1:3,c("disp", "cyl")]
+mtcars[1:10,]
+
+1:10
+
+c(5:15, 50:100)
+
+mtcars[mtcars$mpg %in% 10:20,]
 ```
 
 data.frames are created with... that is right! the `data.frame()` function
@@ -282,6 +295,8 @@ data.frames are created with... that is right! the `data.frame()` function
 ```{r}
 my_dataframe <- data.frame(Gene = c("gfap", "tnfa", "il1b"), 
                            expression = c(10.3, 34.5, 5.7))
+
+my_dataframe$number_animals<-c(2,2, NA)
 ```
 
 Creating data.frames by hand is tedious, so most of the time you want to upload data directly from a file. See X section for that!
@@ -531,10 +546,13 @@ Reading data from a file into R is easy. There are a few functions, but we can s
 
 ```{r}
 write.csv(x = mtcars, file = "mtcars.csv")
+write.csv(x = bj1_t, file = "bj1_t.csv")
 ```
 
 ```{r}
-my_data <- read.csv("mtcars.csv")
+my_data <- read.csv(skip =1,"bj1_t.csv" )
+
+read.csv()
 ```
 
 Easy right! There are a few things we want to consider. The most important one is that `read.csv()` will try to guess the type for each column, but sometimes gets it wrong. So, make sure that you double check that!
@@ -549,60 +567,3 @@ You can force the data type with the *colClasses* argument, or you can transform
 my_data$cyl <- as.character(my_data$cyl)
 typeof(my_data$cyl)
 ```
-
-## Tidyverse
-
-Tidyverse is probably the most used universe of R packages. A package is an R extension (also called library) that adds specific functions to R. A universe contains several packages with integrated and interoperable functionalities. The tidyverse combines packages and functions mostly related to data wrangling, operations and graphics
-
-**Installing a package**
-```{r}
-# From CRAN
-# install.packages("tidyverse")
-```
-
-**Loading a package to current R session**
-```{r}
-library(tidyverse)
-```
-
-### dplyr and “piping”
-
-A handy [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
-
-Tidyverse contains the dplyr package, a framework for data manipulation (or data wrangling). It contains a set of functions that we call verbs and allow us to operate and transform data.
-
-“Piping” using the pipe operator (*%>%*) allow to chain different processes without having to break our code
-
-#### Filter, select and mutate
-
-**Filter and select**
-```{r}
-head(my_data)
-
-my_data%>%
-  filter(disp < 100)
-
-my_data%>%
-  filter(disp < 100, gear == 5)
-
-my_data%>%
-  select(mpg, disp, wt)
-
-my_data%>%
-  filter(disp < 100)%>%
-  select(mpg, disp, wt)
-```
-
-**Mutate**
-```{r}
-my_data%>%
-  mutate(size = ifelse(wt > 2, "big", "small"))
-
-my_data%>%
-  mutate(size = ifelse(wt > 2, "big", "small"),
-         cyl_gear = paste(cyl, gear, sep = "_"))
-```
-
-### Other important dplyr functions
-
-There is a lot to explore in dplyr and the rest of the tidyverse. We will talk about graphics in the data viz class. Other verbs that you probably will need are: *group_by* and *summarize*. Check them out!

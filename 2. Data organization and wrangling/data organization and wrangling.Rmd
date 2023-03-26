@@ -97,14 +97,17 @@ df %>%
 
 **Filter and select**
 ```{r}
+
+gear = 5
+
 my_data<-mtcars
 head(my_data)
 
 my_data%>%
-  filter(disp < 100)
+  filter(disp < 100 | gear ==5)
 
 my_data%>%
-  filter(disp < 100, gear == 5)
+  filter(disp < 100, gear = 5)
 
 my_data%>%
   select(mpg, disp, wt)
@@ -112,6 +115,11 @@ my_data%>%
 my_data%>%
   filter(disp < 100)%>%
   select(mpg, disp, wt)
+
+```
+```{r}
+my_data%>%
+  
 ```
 
 **Mutate**
@@ -121,7 +129,8 @@ my_data%>%
 
 my_data%>%
   mutate(size = ifelse(wt > 2, "big", "small"),
-         cyl_gear = paste(cyl, gear, sep = "_"))
+         cyl_gear = paste(cyl, gear, sep = "_"),
+         mpg = mpg*100)
 ```
 
 ### Examples using dplyr and pipes

@@ -14,6 +14,11 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse) # for data wrangling and processing
+```
+
+
 # Introduction
 
 This document will work through an example of a data science project in R, from organizing the project to full reporting with tables and graphics. This is a companion of the full course *Introduction to data science and biostatistics in R*. Each section will provide a working example of the material seen in the course.
@@ -196,7 +201,9 @@ We know this is a designed experiment, so we expect different groups. The datase
 ```{r}
 # the unique function returns the different values in a vector
 unique(odc_df$Group)
+# unique(c("A","B","B","C"))
 ```
+
 
 > What does it means to be in the group 1 or 2? We cannot find that information on the data dictionary. At this point, we are blinded to the group assignment, and we might want to contact the data authors for information.
 
@@ -225,6 +232,111 @@ The rehabilitative training performed in this study is the single pellet reachin
 
 ## Data pre-processing for analysis
 
-**Come back after data wrangling lecture**
+>Come back after data wrangling lecture
+
+We need to do some wrangling of the dataset to prepare the data for analysis. The goal is to have one column for the **timepoints**, and separate columns for each one of the outcomes (reaching, grasping, retrieval and attempts).
+
+There are several ways we could go for re-organizing this data. One way could be following these steps:
+
+1. Create a new dataset with the functional outcome variables and the subject identifier only.
+2. Pivot (i.e., rotate) the outcome variables so that the variable names are in one column and the values in another column. **We call this long-view**
+3. Create new column with the timepoints, and a new column with the outcome variable name. We will need to do some cleaning for consistency.
+4. Pivot the outcomes variables back to each one being a single column.
+
+**Here is the code by steps**
+
+*1. Create new dataset*
+```{r}
+# print a quick look a the data
+# head(odc_df)
+
+# create a new dataframe with the SPG outcome information
+odc_SPG_df<-odc_df%>%
+  select(Subject_ID, Group,Cohort,
+         Baseline.Percent_Reaching, 
+         Baseline.Percent_Grasping, 
+         Baseline.Percent_Retrieval, 
+         Baseline_Attempts,
+         wk2_post_inj_attempts, 
+         wk2_post_inj_reaching, 
+         wk2_post_inj_grasping, 
+         wk2_post_inj_retrieval, 
+         wk4_post_inj_attempts,
+         wk4_post_inj_reaching, 
+         wk4_post_inj_grasping, 
+         wk4_post_inj_retrieval, 
+         wk6_post_inj_attempts, 
+         wk6_post_inj_reaching, 
+         wk6_post_inj_grasping, 
+         wk6_post_inj_retrieval)
+```
+
+*2. Pivot to long-view*
+
+Pivot the table to long view keeping subject ID, Group, and Cohort as columns using the function *pivot_longer()*. Notice the - sign in front of the columns names. The cols argument takes what columns to pivot. You can specify all of them (e.g., Baseline.Percent_Reaching, etc.), but that is a lot of writing. Alternatively you can specify the ones to NOT use with *-c(Subject_ID, Group)*
+
+```{r}
+
+odc_SPG_df<-odc_SPG_df%>%
+  pivot_longer(cols = -c(Subject_ID, Group, Cohort)) 
+
+head(odc_SPG_df)
+```
+
+*3. Extract timepoints and variable names*
+
+Here is where most of the action happens! Now that we have the variables in a single column, we need to extract the timepoints and the variable names. For that we are going to create new variables with *mutate()* and use a very handy function called *case_when()*, which allow us to make multiple "if else"-like statements on a single variable.
+
+In addition, we are going to take the opportunity to rename things for consistency and clarity. In combination with *case_when()* we are going to use the *str_detect()* function to detect different text (strings or str) from the variables.
+
+Let's do this in separate sections for illustration, although we could do it all at once. We start with the timepoints.
+
+```{r}
+odc_SPG_df<-odc_SPG_df%>%
+  mutate(timepoint = case_when(
+    str_detect(name, "Baseline")~"BL",
+    str_detect(name, "wk2")~"wk2",
+    str_detect(name, "wk4")~"wk4",
+    str_detect(name, "wk6")~"wk6"
+  ))
+
+head(odc_SPG_df)
+```
+
+Next we do the variable names.
+
+```{r}
+odc_SPG_df<-odc_SPG_df%>%
+  mutate(outcome = case_when(
+    str_detect(name, "[Rr]eaching")~"reaching",
+    str_detect(name, "[Gg]rasping")~"grasping",
+    str_detect(name, "[Aa]ttempts")~"attempts",
+    str_detect(name, "[Rr]etrieval")~"retrieval"
+  ))
+
+head(odc_SPG_df)
+```
+
+Finally we can eliminate the *name* column as we do not need it anymore.
+
+```{r}
+odc_SPG_df<-odc_SPG_df%>%
+  select(-name)
+```
+
+*4. Pivot outcomes back to columns*
+
+The last step is to put the outcomes back into columns. We could leave them as they are, in long format, and in some cases it can be handy, depending on what we are going to do next. For now, let's transform them back so we can have each outcome individually. For that we are going to use the *pivot_wider()* function.
+
+```{r}
+odc_SPG_df<-odc_SPG_df%>%
+  pivot_wider(id_col = c(Subject_ID, Group, Cohort, timepoint), # specify columns to not pivot
+              names_from = outcome, # specify the variable in long format to create the name of the new variables
+              values_from = value) # specify the name of the variable with the values that will go with the new variables
+
+head(odc_SPG_df)
+```
+
+DONE! Now we have the dataset ready for some exploratory summaries and analysis.
 
 WORK IN PROGRESS HERE

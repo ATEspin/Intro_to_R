@@ -181,6 +181,20 @@ analysis</a></li>
 </div>
 
 <section class="main-content">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data wrangling and processing</span></span></code></pre></div>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 4.1.3</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.4.0     v purrr   0.3.4
+## v tibble  3.1.8     v dplyr   1.0.7
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.3     v forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.1.3</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.1.3</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 4.1.1</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.1.3</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>This document will work through an example of a data science project
@@ -325,16 +339,16 @@ while if your code takes long to run.</p>
 things very easy for us.</p>
 <p>How do we upload a **.csv* file to the R session?
 (programmatically)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write code here to read the data and the data dictionary into two different objects</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>odc_df<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">&quot;data/odc-sci_747.csv&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>odc_dic<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">&quot;data/odc-sci_747_dictionary.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write code here to read the data and the data dictionary into two different objects</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>odc_df<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">&quot;data/odc-sci_747.csv&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>odc_dic<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">&quot;data/odc-sci_747_dictionary.csv&quot;</span>)</span></code></pre></div>
 <div id="initial-look-at-the-data" class="section level2">
 <h2>Initial look at the data</h2>
 <p>It is important to check that the data is what we expect and that we
 understand the data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check the column names of the data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_df)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check the column names of the data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_df)</span></code></pre></div>
 <pre><code>##   [1] &quot;Subject_ID&quot;                 &quot;Species&quot;                   
 ##   [3] &quot;Strain&quot;                     &quot;Animal_origin&quot;             
 ##   [5] &quot;Age&quot;                        &quot;Weight&quot;                    
@@ -388,14 +402,14 @@ understand the data.</p>
 ## [101] &quot;vGrey_Matter_c400&quot;          &quot;vWhite_Matter_c400&quot;        
 ## [103] &quot;dGrey_Matter_c200&quot;          &quot;dWhite_Matter_c200&quot;        
 ## [105] &quot;vGrey_Matter_c200&quot;          &quot;vWhite_Matter_c200&quot;</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_dic)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_dic)</span></code></pre></div>
 <pre><code>## [1] &quot;ï..VariableName&quot; &quot;Title&quot;           &quot;Unit_of_Measure&quot; &quot;Description&quot;    
 ## [5] &quot;DataType&quot;        &quot;PermittedValues&quot; &quot;MinimumValue&quot;    &quot;MaximumValue&quot;   
 ## [9] &quot;Comments&quot;</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct variable names if needed. In this example we set the first column name for the data dictionary to be &quot;VariableName&quot;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_dic)[<span class="dv">1</span>]<span class="ot">&lt;-</span><span class="st">&quot;VariableName&quot;</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check the structure of the data and the data dictionary</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(odc_df)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct variable names if needed. In this example we set the first column name for the data dictionary to be &quot;VariableName&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(odc_dic)[<span class="dv">1</span>]<span class="ot">&lt;-</span><span class="st">&quot;VariableName&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check the structure of the data and the data dictionary</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(odc_df)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    42 obs. of  106 variables:
 ##  $ Subject_ID                : chr  &quot;1-2017ALO&quot; &quot;3-2017ALO&quot; &quot;4-2017ALO&quot; &quot;5-2017ALO&quot; ...
 ##  $ Species                   : chr  &quot;rat&quot; &quot;rat&quot; &quot;rat&quot; &quot;rat&quot; ...
@@ -497,13 +511,13 @@ understand the data.</p>
 ##  $ vWhite_Matter_c800        : num  90.3 72.6 64 13.1 80.6 ...
 ##  $ dGrey_Matter_c400         : num  68.3 NA 0 0 16.1 ...
 ##   [list output truncated]</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check if all variables in the dataset are defined in the data dictionary.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Hint. You can check in a character vector has matching elements with another character vector with char_vector_1 %in% char_vector_2 operation</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>VarNames<span class="ot">&lt;-</span><span class="fu">colnames</span>(odc_df) <span class="co"># save variable names in dataset</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName <span class="co">#matches in logical vector</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write code here to check if all variables in the dataset are defined in the data dictionary.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Hint. You can check in a character vector has matching elements with another character vector with char_vector_1 %in% char_vector_2 operation</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>VarNames<span class="ot">&lt;-</span><span class="fu">colnames</span>(odc_df) <span class="co"># save variable names in dataset</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName <span class="co">#matches in logical vector</span></span></code></pre></div>
 <pre><code>##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ##  [13]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE
 ##  [25]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
@@ -513,9 +527,9 @@ understand the data.</p>
 ##  [73]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ##  [85]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName) <span class="co">#proportion of matches</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName) <span class="co">#proportion of matches</span></span></code></pre></div>
 <pre><code>## [1] 0.9622642</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>VarNames[<span class="sc">!</span>VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName] <span class="co">#which ones do no match</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>VarNames[<span class="sc">!</span>VarNames<span class="sc">%in%</span>odc_dic<span class="sc">$</span>VariableName] <span class="co">#which ones do no match</span></span></code></pre></div>
 <pre><code>## [1] &quot;Baseline.Percent_Reaching&quot;  &quot;Baseline.Percent_Grasping&quot; 
 ## [3] &quot;Baseline.Percent_Retrieval&quot; &quot;Post.inj_severity_score&quot;</code></pre>
 <p><strong>What observations can we make about the dataset?</strong></p>
@@ -546,9 +560,10 @@ have on rehabilitative training, and what improvement means.</p>
 <h3>Experimental groups</h3>
 <p>We know this is a designed experiment, so we expect different groups.
 The dataset includes the Group variable.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the unique function returns the different values in a vector</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(odc_df<span class="sc">$</span>Group)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the unique function returns the different values in a vector</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(odc_df<span class="sc">$</span>Group)</span></code></pre></div>
 <pre><code>## [1] 1 2</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unique(c(&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;C&quot;))</span></span></code></pre></div>
 <blockquote>
 <p>What does it means to be in the group 1 or 2? We cannot find that
 information on the data dictionary. At this point, we are blinded to the
@@ -557,18 +572,18 @@ information.</p>
 </blockquote>
 <p>We also need to be aware that there are different cohorts of animals
 in this dataset</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(odc_df<span class="sc">$</span>Cohort)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(odc_df<span class="sc">$</span>Cohort)</span></code></pre></div>
 <pre><code>## [1] 1 2 3</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the table function allows for a quick cross-tabulation of the counts of entries on two vectors</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(odc_df<span class="sc">$</span>Group, odc_df<span class="sc">$</span>Cohort)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the table function allows for a quick cross-tabulation of the counts of entries on two vectors</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(odc_df<span class="sc">$</span>Group, odc_df<span class="sc">$</span>Cohort)</span></code></pre></div>
 <pre><code>##    
 ##      1  2  3
 ##   1  5 12  0
 ##   2  5  7 13</code></pre>
 <p>We can see that all animals in cohort 3 belong to group 2, and that
 there is an unbalance distribution between groups in cohort 2</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also add the total marginal counts to the table</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(odc_df<span class="sc">$</span>Group, odc_df<span class="sc">$</span>Cohort))</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can also add the total marginal counts to the table</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(odc_df<span class="sc">$</span>Group, odc_df<span class="sc">$</span>Cohort))</span></code></pre></div>
 <pre><code>##      
 ##        1  2  3 Sum
 ##   1    5 12  0  17
@@ -591,7 +606,148 @@ of retrieval). We may want to study those.</li>
 </div>
 <div id="data-pre-processing-for-analysis" class="section level2">
 <h2>Data pre-processing for analysis</h2>
-<p><strong>Come back after data wrangling lecture</strong></p>
+<blockquote>
+<p>Come back after data wrangling lecture</p>
+</blockquote>
+<p>We need to do some wrangling of the dataset to prepare the data for
+analysis. The goal is to have one column for the
+<strong>timepoints</strong>, and separate columns for each one of the
+outcomes (reaching, grasping, retrieval and attempts).</p>
+<p>There are several ways we could go for re-organizing this data. One
+way could be following these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Create a new dataset with the functional outcome variables and the
+subject identifier only.</li>
+<li>Pivot (i.e., rotate) the outcome variables so that the variable
+names are in one column and the values in another column. <strong>We
+call this long-view</strong></li>
+<li>Create new column with the timepoints, and a new column with the
+outcome variable name. We will need to do some cleaning for
+consistency.</li>
+<li>Pivot the outcomes variables back to each one being a single
+column.</li>
+</ol>
+<p><strong>Here is the code by steps</strong></p>
+<p><em>1. Create new dataset</em></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print a quick look a the data</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># head(odc_df)</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new dataframe with the SPG outcome information</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_df<span class="sc">%&gt;%</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Subject_ID, Group,Cohort,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>         Baseline.Percent_Reaching, </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>         Baseline.Percent_Grasping, </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>         Baseline.Percent_Retrieval, </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>         Baseline_Attempts,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>         wk2_post_inj_attempts, </span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>         wk2_post_inj_reaching, </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>         wk2_post_inj_grasping, </span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>         wk2_post_inj_retrieval, </span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>         wk4_post_inj_attempts,</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>         wk4_post_inj_reaching, </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>         wk4_post_inj_grasping, </span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>         wk4_post_inj_retrieval, </span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>         wk6_post_inj_attempts, </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>         wk6_post_inj_reaching, </span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>         wk6_post_inj_grasping, </span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>         wk6_post_inj_retrieval)</span></code></pre></div>
+<p><em>2. Pivot to long-view</em></p>
+<p>Pivot the table to long view keeping subject ID, Group, and Cohort as
+columns using the function <em>pivot_longer()</em>. Notice the - sign in
+front of the columns names. The cols argument takes what columns to
+pivot. You can specify all of them (e.g., Baseline.Percent_Reaching,
+etc.), but that is a lot of writing. Alternatively you can specify the
+ones to NOT use with <em>-c(Subject_ID, Group)</em></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_SPG_df<span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(Subject_ID, Group, Cohort)) </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(odc_SPG_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   Subject_ID Group Cohort name                       value
+##   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt; &lt;chr&gt;                      &lt;dbl&gt;
+## 1 1-2017ALO      1      1 Baseline.Percent_Reaching  100  
+## 2 1-2017ALO      1      1 Baseline.Percent_Grasping   68.3
+## 3 1-2017ALO      1      1 Baseline.Percent_Retrieval  67.3
+## 4 1-2017ALO      1      1 Baseline_Attempts           36  
+## 5 1-2017ALO      1      1 wk2_post_inj_attempts       30  
+## 6 1-2017ALO      1      1 wk2_post_inj_reaching       97.2</code></pre>
+<p><em>3. Extract timepoints and variable names</em></p>
+<p>Here is where most of the action happens! Now that we have the
+variables in a single column, we need to extract the timepoints and the
+variable names. For that we are going to create new variables with
+<em>mutate()</em> and use a very handy function called
+<em>case_when()</em>, which allow us to make multiple “if else”-like
+statements on a single variable.</p>
+<p>In addition, we are going to take the opportunity to rename things
+for consistency and clarity. In combination with <em>case_when()</em> we
+are going to use the <em>str_detect()</em> function to detect different
+text (strings or str) from the variables.</p>
+<p>Let’s do this in separate sections for illustration, although we
+could do it all at once. We start with the timepoints.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_SPG_df<span class="sc">%&gt;%</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">timepoint =</span> <span class="fu">case_when</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;Baseline&quot;</span>)<span class="sc">~</span><span class="st">&quot;BL&quot;</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;wk2&quot;</span>)<span class="sc">~</span><span class="st">&quot;wk2&quot;</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;wk4&quot;</span>)<span class="sc">~</span><span class="st">&quot;wk4&quot;</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;wk6&quot;</span>)<span class="sc">~</span><span class="st">&quot;wk6&quot;</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(odc_SPG_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+##   Subject_ID Group Cohort name                       value timepoint
+##   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt; &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;    
+## 1 1-2017ALO      1      1 Baseline.Percent_Reaching  100   BL       
+## 2 1-2017ALO      1      1 Baseline.Percent_Grasping   68.3 BL       
+## 3 1-2017ALO      1      1 Baseline.Percent_Retrieval  67.3 BL       
+## 4 1-2017ALO      1      1 Baseline_Attempts           36   BL       
+## 5 1-2017ALO      1      1 wk2_post_inj_attempts       30   wk2      
+## 6 1-2017ALO      1      1 wk2_post_inj_reaching       97.2 wk2</code></pre>
+<p>Next we do the variable names.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_SPG_df<span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">outcome =</span> <span class="fu">case_when</span>(</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;[Rr]eaching&quot;</span>)<span class="sc">~</span><span class="st">&quot;reaching&quot;</span>,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;[Gg]rasping&quot;</span>)<span class="sc">~</span><span class="st">&quot;grasping&quot;</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;[Aa]ttempts&quot;</span>)<span class="sc">~</span><span class="st">&quot;attempts&quot;</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(name, <span class="st">&quot;[Rr]etrieval&quot;</span>)<span class="sc">~</span><span class="st">&quot;retrieval&quot;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(odc_SPG_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   Subject_ID Group Cohort name                       value timepoint outcome  
+##   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt; &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+## 1 1-2017ALO      1      1 Baseline.Percent_Reaching  100   BL        reaching 
+## 2 1-2017ALO      1      1 Baseline.Percent_Grasping   68.3 BL        grasping 
+## 3 1-2017ALO      1      1 Baseline.Percent_Retrieval  67.3 BL        retrieval
+## 4 1-2017ALO      1      1 Baseline_Attempts           36   BL        attempts 
+## 5 1-2017ALO      1      1 wk2_post_inj_attempts       30   wk2       attempts 
+## 6 1-2017ALO      1      1 wk2_post_inj_reaching       97.2 wk2       reaching</code></pre>
+<p>Finally we can eliminate the <em>name</em> column as we do not need
+it anymore.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_SPG_df<span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>name)</span></code></pre></div>
+<p><em>4. Pivot outcomes back to columns</em></p>
+<p>The last step is to put the outcomes back into columns. We could
+leave them as they are, in long format, and in some cases it can be
+handy, depending on what we are going to do next. For now, let’s
+transform them back so we can have each outcome individually. For that
+we are going to use the <em>pivot_wider()</em> function.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>odc_SPG_df<span class="ot">&lt;-</span>odc_SPG_df<span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_col =</span> <span class="fu">c</span>(Subject_ID, Group, Cohort, timepoint), <span class="co"># specify columns to not pivot</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> outcome, <span class="co"># specify the variable in long format to create the name of the new variables</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> value) <span class="co"># specify the name of the variable with the values that will go with the new variables</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(odc_SPG_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 8
+##   Subject_ID Group Cohort timepoint reaching grasping retrieval attempts
+##   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 1-2017ALO      1      1 BL           100       68.3      67.3       36
+## 2 1-2017ALO      1      1 wk2           97.2     41.7      38.9       30
+## 3 1-2017ALO      1      1 wk4           94       38.9      38.9       36
+## 4 1-2017ALO      1      1 wk6           96.3     53.7      51.2       82
+## 5 3-2017ALO      2      1 BL           100       51.1      48.9       19
+## 6 3-2017ALO      2      1 wk2           92.5     10        33.3       40</code></pre>
+<p>DONE! Now we have the dataset ready for some exploratory summaries
+and analysis.</p>
 <p>WORK IN PROGRESS HERE</p>
 </div>
 </div>

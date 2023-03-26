@@ -1,0 +1,52 @@
+---
+title: "test project"
+author: "Abel Torres Espin"
+date: '2023-01-30'
+output: 
+  html_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction
+
+some information about this project
+
+# Setup
+
+```{r}
+library(tidyverse) # for data analysis
+#install.packages("tidyverse")
+```
+
+# Data
+## Data import
+
+```{r}
+sci_df<-read.csv("data/odc-sci_747.csv")
+sci_dic_df<-read.csv("data/odc-sci_747_dictionary.csv")
+```
+
+## Data exploration
+
+```{r}
+colnames(sci_df)
+colnames(sci_dic_df) # print all column names
+colnames(sci_dic_df)[1]<-"VariableName" # correct first column name in data dictionary
+```
+
+```{r}
+str(sci_df)
+```
+
+```{r}
+```
+
+
+```{r}
+```
+
